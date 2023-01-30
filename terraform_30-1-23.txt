@@ -1,0 +1,117 @@
+                                                                     Terraform
+
+A Terraform project is just a set of files in a directory containing resource definitions. Those files, which by convention end in .tf, use Terraform's configuration language to define the resources we want to create.
+
+For our “Hello, Terraform” project, our resource will be just a file with fixed content.
+
+$ cd $HOME
+$ mkdir hello-terraform
+$ cd hello-terraform
+$ cat > main.tf <<EOF
+provider "local" {
+  version = "~> 1.4"
+}
+resource "local_file" "hello" {
+  content = "Hello, Terraform"
+  filename = "hello.txt"
+}
+EOF
+
+
+
+The main.tf file contains two blocks: a provider declaration and a resource definition. we have a resource definition named hello of type local_file. This resource type, as the name implies, is just a file on the local file system with the given content.
+
+
+                                                       Terraform Commands
+
+CLI Tricks:
+
+ Command Line Interface (CLI) to manage infrastructure, and interact with Terraform state, providers, configuration files,
+ and Terraform Cloud.
+
+Setup tab auto-completion,requires logging back in.
+
+Format and validate:
+
+Terraform Format:
+
+Format code per HCL canonical standard
+
+The terraform fmt command is used to rewrite Terraform configuration files to a canonical format and style. This command applies a subset of the Terraform 
+language style conventions, along with other minor adjustments for readability.
+
+Terraform Validate:
+
+The terraform validate command is used to validate the syntax of the terraform files. Terraform performs a syntax check on all the terraform files in the
+ directory, and will display an error if any of the files doesn't validate. 
+
+Terraform validate -backend=false:
+
+ validate code skip backend validation
+
+Initialize your terraform:
+
+Terraform init:
+The terraform init command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run 
+after writing a new Terraform configuration or cloning an existing one from version control. It is safe to run this command multiple times.
+
+Terraform init -get-plugins=false:
+Initialize directory, do not download plugins
+
+Terraform init -verify-plugins=false:
+Initialize directory, do not verify plugins for Hashicorp signature
+
+Terraform Miscelleneous commands:
+
+Terraform version:
+Display Terraform binary version, also warns if version is old
+
+Terraform get -update=true:
+Download and update modules in the “root” module.
+
+
+Terraform Console:
+
+The terraform console command provides an interactive console for evaluating expressions.
+
+echo 'join(",",["foo","bar"])' | terraform console:
+echo an expression into terraform console and see its expected result as output
+
+echo '1 + 5' | terraform console:
+Terraform console also has an interactive CLI just enter “terraform console”
+
+echo "aws_instance.my_ec2.public_ip" | terraform console:
+Display the Public IP against the “my_ec2” Terraform resource as seen in the Terraform state file
+
+
+Terraform Graph(Dependency Graphing):
+
+terraform graph | dot -Tpng > graph.png:
+produce a PNG diagrams showing relationship and dependencies between Terraform resource in your configuration/code
+
+Terraform Taint/Untaint(mark/unmark resource for recreation -> delete and then recreate):
+
+The Terraform Taint command allows you to manually flag a resource as tainted, which means it will be destroyed and recreated on the next terraform apply.
+ Terraform untaint allows you to remove that tainted condition from the resource.
+
+Terraform taint aws_instance.my_ec2:
+taints resource to be recreated on next apply
+Terraform untaint aws_instance.my_ec2 :
+Remove taint rom a resource
+Terraform force-unlock LOCK_ID:
+forcefully unlock a locked state file, LOCK_ID provided when locking the State file beforehand
+
+Terraform Cloud:
+Terraform Cloud is HashiCorp’s managed service offering. It eliminates the need for unnecessary tooling and documentation for practitioners, teams, and 
+organizations to use Terraform in production.
+
+Terraform login:
+obtain and save API token for Terraform cloud
+terraform logout:
+Log out of Terraform Cloud, defaults to hostname app.terraform.io
+
+
+
+
+
+
